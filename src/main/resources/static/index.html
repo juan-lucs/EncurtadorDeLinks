@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encurtador de Links</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <section class="card">
+            <h1>Encurtador de Links</h1>
+            <p class="subtitle">Cole uma URL e transforme em um link curto.</p>
+
+            <form id="linkForm">
+                <label for="url">URL</label>
+                <div class="input-row">
+                    <input
+                        id="url"
+                        name="url"
+                        type="url"
+                        placeholder="https://exemplo.com"
+                        required
+                    >
+                    <button type="submit">Encurtar</button>
+                </div>
+            </form>
+
+            <div id="message" class="message hidden"></div>
+
+            <section id="result" class="result hidden">
+                <span>Seu link:</span>
+                <div class="result-row">
+                    <a id="shortUrl" href="#" target="_blank" rel="noopener"></a>
+                    <button id="copyButton" type="button">Copiar</button>
+                </div>
+                <div class="clicks-row">
+                    <p id="clicks"></p>
+                    <button id="refreshButton" type="button" class="small">↻ Atualizar</button>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

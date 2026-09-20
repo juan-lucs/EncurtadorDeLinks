@@ -1,19 +1,16 @@
 package com.juanlucas.encurtador_de_links_api.Model.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
-public class CreateLinkRequest {
+@Getter
+@Setter
+public class CriarLinkRequest {
 
     @NotBlank
     private String url;
-    public CreateLinkRequest() {
+    public CriarLinkRequest() {
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

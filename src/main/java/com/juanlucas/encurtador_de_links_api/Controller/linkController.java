@@ -1,8 +1,9 @@
 package com.juanlucas.encurtador_de_links_api.Controller;
 
 import com.juanlucas.encurtador_de_links_api.Exception.EncurtadorNaoEncontradoException;
-import com.juanlucas.encurtador_de_links_api.Exception.UrlVaziaException;
-import com.juanlucas.encurtador_de_links_api.Model.DTO.CreateLinkRequest;
+import com.juanlucas.encurtador_de_links_api.Exception.UrlInvalidaException;
+import com.juanlucas.encurtador_de_links_api.Model.DTO.CriarLinkRequest;
+import com.juanlucas.encurtador_de_links_api.Model.DTO.SaidaLinkRequest;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.Link;
 import com.juanlucas.encurtador_de_links_api.Service.LinkService;
 import jakarta.validation.Valid;
@@ -19,8 +20,8 @@ public class linkController {
     }
 
     @PostMapping
-    public Link encurtarLink(@RequestBody @Valid CreateLinkRequest url) throws UrlVaziaException {
-        return Service.encurtarLink(url);
+    public SaidaLinkRequest encurtarLink(@RequestBody @Valid CriarLinkRequest url) throws UrlInvalidaException {
+        return new SaidaLinkRequest(Service.encurtarLink(url));
     }
 
     @GetMapping("/{codigo}")
@@ -30,7 +31,7 @@ public class linkController {
     }
 
     @GetMapping("/{codigo}/status")
-    public Link status(@PathVariable String codigo) {
-        return Service.buscarcliques(codigo);
+    public SaidaLinkRequest status(@PathVariable String codigo) {
+        return new SaidaLinkRequest(Service.buscarcliques(codigo));
     }
 }

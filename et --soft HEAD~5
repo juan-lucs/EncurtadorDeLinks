@@ -1,0 +1,49 @@
+[33mcommit 7f620c3c7149850a0bebd8093ad40fc3cf70d8c5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: juan-lucs <ls2699120@gmail.com>
+Date:   Sun Sep 20 18:41:49 2026 -0300
+
+    feat: usa DTO de saída nos endpoints do linkController
+
+ src/main/java/com/juanlucas/encurtador_de_links_api/Controller/linkController.java | 9 [32m+++++[m[31m----[m
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+[33mcommit 3d2a330a1bb558448d4c6983dd62a71288f1554a[m
+Author: juan-lucs <ls2699120@gmail.com>
+Date:   Sun Sep 20 18:41:49 2026 -0300
+
+    feat: implementa encurtar, buscar e contar cliques no LinkService
+
+ src/main/java/com/juanlucas/encurtador_de_links_api/Service/LinkService.java | 70 [32m++++++++++++++++++++++++++++++++++++++++++++++[m[31m------------------------[m
+ 1 file changed, 46 insertions(+), 24 deletions(-)
+
+[33mcommit 135c8c8ccfa87f3810f504a4378a541d94d766aa[m
+Author: juan-lucs <ls2699120@gmail.com>
+Date:   Sun Sep 20 18:41:49 2026 -0300
+
+    feat: adiciona DTOs de entrada e saída do link
+
+ src/main/java/com/juanlucas/encurtador_de_links_api/Model/DTO/CriarLinkRequest.java | 15 [32m++++++[m[31m---------[m
+ src/main/java/com/juanlucas/encurtador_de_links_api/Model/DTO/SaidaLinkRequest.java | 38 [32m++++++++++++++++++++++++++++++++++++++[m
+ 2 files changed, 44 insertions(+), 9 deletions(-)
+
+[33mcommit 10d3ab116e9964663ed8859173e17b49f411c7b9[m
+Author: juan-lucs <ls2699120@gmail.com>
+Date:   Sun Sep 20 18:41:49 2026 -0300
+
+    feat: adiciona EstatisticaLink e relaciona com Link (OneToOne)
+
+ src/main/java/com/juanlucas/encurtador_de_links_api/Model/Entity/EstatisticaLink.java         | 45 [32m+++++++++++++++++++++++++++++++++++++++++++++[m
+ src/main/java/com/juanlucas/encurtador_de_links_api/Model/Entity/Link.java                    | 65 [32m+++++++++[m[31m--------------------------------------------------------[m
+ src/main/java/com/juanlucas/encurtador_de_links_api/Repository/estatisticaLinkRepository.java | 11 [32m+++++++++++[m
+ src/main/java/com/juanlucas/encurtador_de_links_api/Repository/linkRepository.java            |  5 [32m+++++[m
+ 4 files changed, 70 insertions(+), 56 deletions(-)
+
+[33mcommit f2809016a10c7483a189ed109f7dddefbb6ab392[m
+Author: juan-lucs <ls2699120@gmail.com>
+Date:   Sun Sep 20 18:41:49 2026 -0300
+
+    feat: adiciona UrlInvalidaException e tratamento global de exceções
+
+ src/main/java/com/juanlucas/encurtador_de_links_api/Exception/GLobalExceptionHandler.java | 42 [32m++++++++++++++++++++++++++++++++++++++++++[m
+ src/main/java/com/juanlucas/encurtador_de_links_api/Exception/UrlInvalidaException.java   |  7 [32m+++++++[m
+ 2 files changed, 49 insertions(+)

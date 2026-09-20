@@ -12,8 +12,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "Link")
-@Getter
-@Setter
 public class Link {
     @Id
     @Column
@@ -23,11 +21,62 @@ public class Link {
     private String urlOriginal;
 
     @Column
-    private Long codigo;
+    private String codigo;
 
     @Column
     private LocalDate Datacriacao;
 
     @Column
     private int cliques;
+
+    public Link(String id, String urlOriginal, String codigo, LocalDate datacriacao) {
+        this.id = id;
+        this.urlOriginal = urlOriginal;
+        this.codigo = codigo;
+        this.Datacriacao = datacriacao;
+    }
+
+    public Link() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrlOriginal() {
+        return urlOriginal;
+    }
+
+    public void setUrlOriginal(String urlOriginal) {
+        this.urlOriginal = urlOriginal;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public LocalDate getDatacriacao() {
+        return Datacriacao;
+    }
+
+    public void setDatacriacao(LocalDate datacriacao) {
+        Datacriacao = datacriacao;
+    }
+
+    public int getCliques() {
+        return cliques;
+    }
+
+    public void setCliques(int cliques) {
+        this.cliques = cliques;
+    }
+
 }

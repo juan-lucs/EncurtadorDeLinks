@@ -4,7 +4,6 @@ import com.juanlucas.encurtador_de_links_api.Exception.EncurtadorNaoEncontradoEx
 import com.juanlucas.encurtador_de_links_api.Exception.UrlInvalidaException;
 import com.juanlucas.encurtador_de_links_api.Model.DTO.CriarLinkRequest;
 import com.juanlucas.encurtador_de_links_api.Model.DTO.SaidaLinkRequest;
-import com.juanlucas.encurtador_de_links_api.Model.Entity.Link;
 import com.juanlucas.encurtador_de_links_api.Service.LinkService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +11,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("link")
-public class linkController {
+public class LinkController {
     private final LinkService Service;
 
-    public linkController(LinkService service) {
+    public LinkController(LinkService service) {
         Service = service;
     }
 
@@ -31,7 +30,7 @@ public class linkController {
     }
 
     @GetMapping("/{codigo}/status")
-    public SaidaLinkRequest status(@PathVariable String codigo) {
+    public SaidaLinkRequest status(@PathVariable String codigo) throws EncurtadorNaoEncontradoException{
         return new SaidaLinkRequest(Service.buscarcliques(codigo));
     }
 }

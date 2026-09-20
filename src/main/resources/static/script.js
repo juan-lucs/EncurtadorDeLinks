@@ -1,78 +1,120 @@
-const form = document.getElementById("linkForm");
-const urlInput = document.getElementById("url");
-const result = document.getElementById("result");
-const shortUrl = document.getElementById("shortUrl");
-const clicks = document.getElementById("clicks");
-const message = document.getElementById("message");
-const refreshButton = document.getElementById("refreshButton");
-const copyButton = document.getElementById("copyButton");
+const API_URL = window.location.origin;
+
+const form = document.getElementById("form-link");
+const inputUrl = document.getElementById("url");
+const resultado = document.getElementById("resultado");
+const mensagem = document.getElementById("mensagem");
+
+const linkCurto = document.getElementById("link-curto");
+const cliques = document.getElementById("cliques");
+const dataCriacao = document.getElementById("data-criacao");
+
+const botaoCopiar = document.getElementById("copiar");
+const botaoAtualizar = document.getElementById("atualizar");
 
 let codigoAtual = null;
-let intervaloCliques = null;
 
-async function atualizarCliques() {
-    if (!codigoAtual) return;
-
-    try {
-        const response = await fetch(`/link/${codigoAtual}/status`);
-        if (!response.ok) return;
-
-        const link = await response.json();
-        clicks.textContent = `Cliques: ${link.cliques}`;
-    } catch (error) {
-        // se falhar, mantém o valor que já estava na tela
-        print("aaaaaaaa")
-    }
+// Mostra na tela os dados que o backend devolveu (SaidaLinkRequest)
+function mostrarDados(link) {
+    cliques.textContent = link.cliques ?? 0;
+    dataCriacao.textContent = link.dataCriacao ?? "-";
 }
 
+// Busca as estatísticas SEM contar clique (o GET /link/{codigo} conta e redireciona)
+async function buscarEstatisticas() {
+    const resposta = await fetch(`${API_URL}/link/${codigoAtual}/status`);
+
+    if (!resposta.ok) {
+        throw new Error("Não foi possível atualizar as estatísticas.");
+    }
+
+    return resposta.json();
+}
+
+// Criar link
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    result.classList.add("hidden");
-    message.classList.add("hidden");
-
-    const url = urlInput.value.trim();
+    mensagem.textContent = "";
+    resultado.classList.add("hidden");
 
     try {
-        const response = await fetch("/link", {
+        const resposta = await fetch(`${API_URL}/link`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ url })
+            body: JSON.stringify({
+                url: inputUrl.value
+            })
         });
 
-        if (!response.ok) {
-            throw new Error("Não foi possível encurtar a URL.");
+        if (!resposta.ok) {
+            // O backend devolve um ProblemDetail com o campo "detail"
+            const erro = await resposta.json().catch(() => null);
+            throw new Error(erro?.detail ?? "Não foi possível encurtar a URL.");
         }
 
-        const link = await response.json();
+        const link = await resposta.json();
 
-        // Seu backend retorna o código gerado no campo "codigo".
-        const generatedUrl = `${window.location.origin}/link/${link.codigo}`;
-
-        shortUrl.href = generatedUrl;
-        shortUrl.textContent = generatedUrl;
-        clicks.textContent = `Cliques: ${link.cliques}`;
         codigoAtual = link.codigo;
-        clearInterval(intervaloCliques);                      // evita acumular timers
-        intervaloCliques = setInterval(atualizarCliques, 5000);
 
-        result.classList.remove("hidden");
-    } catch (error) {
-        message.textContent = error.message;
-        message.classList.remove("hidden");
+        const urlCurta = `${API_URL}/link/${link.codigo}`;
+
+        linkCurto.textContent = urlCurta;
+        linkCurto.href = urlCurta;
+
+        mostrarDados(link);
+
+        resultado.classList.remove("hidden");
+
+    } catch (erro) {
+        mensagem.textContent = erro.message;
     }
 });
 
-copyButton.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(shortUrl.href);
 
-    const originalText = copyButton.textContent;
-    copyButton.textContent = "Copiado!";
+// Atualizar contador (botão)
+botaoAtualizar.addEventListener("click", async () => {
+    if (!codigoAtual) {
+        return;
+    }
 
-    setTimeout(() => {
-        copyButton.textContent = originalText;
-    }, 1500);
-    refreshButton.addEventListener("click", atualizarCliques);
+    try {
+        mostrarDados(await buscarEstatisticas());
+        mensagem.textContent = "";
+    } catch (erro) {
+        mensagem.textContent = erro.message;
+    }
 });
+
+
+// Copiar link
+botaoCopiar.addEventListener("click", async () => {
+    try {
+        await navigator.clipboard.writeText(linkCurto.href);
+
+        botaoCopiar.textContent = "Copiado!";
+
+        setTimeout(() => {
+            botaoCopiar.textContent = "Copiar link";
+        }, 1500);
+
+    } catch {
+        mensagem.textContent = "Não foi possível copiar o link.";
+    }
+});
+
+
+// Atualização automática a cada 5 segundos
+setInterval(async () => {
+    if (!codigoAtual || resultado.classList.contains("hidden")) {
+        return;
+    }
+
+    try {
+        mostrarDados(await buscarEstatisticas());
+    } catch {
+        // Não mostra erro para não ficar poluindo a tela
+    }
+}, 5000);

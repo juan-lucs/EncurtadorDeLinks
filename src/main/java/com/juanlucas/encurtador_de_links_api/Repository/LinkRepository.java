@@ -5,9 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Set;
 
-public interface linkRepository extends JpaRepository<Link, String> {
+public interface LinkRepository extends JpaRepository<Link, String> {
     public Link findByCodigo(String codigo);
 
     @Query("SELECT c.codigo FROM Link c")

@@ -3,11 +3,10 @@ package com.juanlucas.encurtador_de_links_api.Service;
 import com.juanlucas.encurtador_de_links_api.Exception.EncurtadorNaoEncontradoException;
 import com.juanlucas.encurtador_de_links_api.Exception.UrlInvalidaException;
 import com.juanlucas.encurtador_de_links_api.Model.DTO.CriarLinkRequest;
-import com.juanlucas.encurtador_de_links_api.Model.DTO.SaidaLinkRequest;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.EstatisticaLink;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.Link;
-import com.juanlucas.encurtador_de_links_api.Repository.estatisticaLinkRepository;
-import com.juanlucas.encurtador_de_links_api.Repository.linkRepository;
+import com.juanlucas.encurtador_de_links_api.Repository.EstatisticaLinkRepository;
+import com.juanlucas.encurtador_de_links_api.Repository.LinkRepository;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -18,10 +17,10 @@ import java.util.*;
 
 @Service
 public class LinkService {
-    private final linkRepository Repositorylink;
-    private final estatisticaLinkRepository Repositoryesta;
+    private final LinkRepository Repositorylink;
+    private final EstatisticaLinkRepository Repositoryesta;
 
-    public LinkService(linkRepository repository, estatisticaLinkRepository repositoryesta) {
+    public LinkService(LinkRepository repository, EstatisticaLinkRepository repositoryesta) {
         Repositoryesta = repositoryesta;
         Repositorylink = repository;
     }
@@ -42,7 +41,7 @@ public class LinkService {
     private static boolean validaUrl(String url) {
         try {
             var uri = new URI(url); // analisa a estrutura da url
-            if ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme()) && uri.getHost() != null) {
+            if (("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) && uri.getHost() != null) {
                 return true;
             } else { return false;}
         } catch (URISyntaxException e) {
@@ -72,7 +71,10 @@ public class LinkService {
         return Repositorylink.save(link);
         }
 
-    public Link buscarcliques(String codigo) {
+    public Link buscarcliques(String codigo) throws EncurtadorNaoEncontradoException{
+        if (codigo == null) {
+            throw new EncurtadorNaoEncontradoException("Url encurtada não encontrada!");
+        }
         var link = Repositorylink.findByCodigo(codigo);
         return link;
     }

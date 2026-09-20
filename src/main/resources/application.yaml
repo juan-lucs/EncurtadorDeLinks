@@ -1,3 +1,14 @@
 spring:
   application:
     name: encurtador-de-links-api
+
+  datasource:
+    url: jdbc:h2:mem:encurtador
+    username: juan
+    password: root
+    driver-class-name: org.h2.Driver # driver JDBC responsavel pela comunicação com o H2
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect  # usando o dialeto sql do h2
+    hibernate:
+      ddl-auto: update # o hibernate vai criar tabelas de acordo com as entidades

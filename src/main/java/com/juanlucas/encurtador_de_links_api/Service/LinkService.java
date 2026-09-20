@@ -6,6 +6,8 @@ import com.juanlucas.encurtador_de_links_api.Model.DTO.CreateLinkRequest;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.Link;
 import com.juanlucas.encurtador_de_links_api.Repository.linkRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.util.Random;
@@ -32,9 +34,7 @@ public class LinkService {
     }
 
     public Link encurtarLink(CreateLinkRequest url) throws UrlVaziaException {
-        if (url.getUrl().isBlank()){
-            throw new UrlVaziaException("Url vazia!");
-        } // ADICIONAR VERIFICADOR DE URL (SE ELA EXISTE E NAO DA 404)
+        // ADICIONAR VERIFICADOR DE URL (SE ELA EXISTE E NAO DA 404)
         var link = new Link(UUID.randomUUID().toString(), url.getUrl(), gerarCodigo(), LocalDate.now());
         Repository.save(link);
         return link;
@@ -49,4 +49,9 @@ public class LinkService {
             Repository.save(link);
             return link;
         }
+
+    public Link buscarcliques(String codigo) {
+        var link = Repository.findByCodigo(codigo);
+        return link;
+    }
 }

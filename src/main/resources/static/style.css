@@ -97,6 +97,23 @@ form button {
     word-break: break-all;
 }
 
+.acessos {
+    margin: 0;
+    padding-left: 20px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.acessos li {
+    margin: 4px 0;
+}
+
+.acessos .vazio {
+    color: #666;
+    list-style: none;
+    margin-left: -20px;
+}
+
 .botao-secundario {
     background: #e9e9e9;
     color: #222;

@@ -31,6 +31,6 @@ public class LinkController {
 
     @GetMapping("/{codigo}/status")
     public SaidaLinkRequest status(@PathVariable String codigo) throws EncurtadorNaoEncontradoException{
-        return new SaidaLinkRequest(Service.buscarcliques(codigo));
+        return Service.buscarcliques(codigo);
     }
 }

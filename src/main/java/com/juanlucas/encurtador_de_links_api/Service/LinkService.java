@@ -3,6 +3,7 @@ package com.juanlucas.encurtador_de_links_api.Service;
 import com.juanlucas.encurtador_de_links_api.Exception.EncurtadorNaoEncontradoException;
 import com.juanlucas.encurtador_de_links_api.Exception.UrlInvalidaException;
 import com.juanlucas.encurtador_de_links_api.Model.DTO.CriarLinkRequest;
+import com.juanlucas.encurtador_de_links_api.Model.DTO.SaidaLinkRequest;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.EstatisticaLink;
 import com.juanlucas.encurtador_de_links_api.Model.Entity.Link;
 import com.juanlucas.encurtador_de_links_api.Repository.EstatisticaLinkRepository;
@@ -71,11 +72,14 @@ public class LinkService {
         return Repositorylink.save(link);
         }
 
-    public Link buscarcliques(String codigo) throws EncurtadorNaoEncontradoException{
+    public SaidaLinkRequest buscarcliques(String codigo) throws EncurtadorNaoEncontradoException{
         if (codigo == null) {
             throw new EncurtadorNaoEncontradoException("Url encurtada não encontrada!");
         }
         var link = Repositorylink.findByCodigo(codigo);
-        return link;
+        if (link == null) {
+            throw new EncurtadorNaoEncontradoException("Url encurtada não encontrada!");
+        }
+        return new SaidaLinkRequest(link);
     }
 }
